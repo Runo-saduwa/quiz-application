@@ -33,6 +33,7 @@ export class Provider extends Component {
 	};
 
 	start = () => {
+        console.log('start function')
 		let count = this.state.count;
 		let question = this.state.questions[count];
 		let currentQuestion = question.question;
@@ -49,13 +50,9 @@ export class Provider extends Component {
 		this.timer = setInterval(() => {
 			const time = this.state.timer;
 			if (time === 0) {
-                console.log('newww timer')
-                this.stopTimer();
-                this.setState({
-                    timer: 10
-                })
-
-                this.start();
+                console.log('next quetion timer')
+                this.stopTimer();  
+                this.next();
 
                 //redirect to next quizzz
 			} else {
@@ -65,40 +62,22 @@ export class Provider extends Component {
     };
     
     next = () => {
-        console.log('new timer')
-        this.stopTimer();
         let count = this.state.count;
 		let question = this.state.questions[count];
-		let currentQuestion = question.question;
-		let currentQuestionOptions = question.options;
-		let currentQuestionAnswer = question.answer;
-		count++;
-		this.setState({
-			currentQuestion,
-			currentQuestionOptions,
-            currentQuestionAnswer,
-            count
-        });
-        
-        this.timer = setInterval(() => {
-			const time = this.state.timer;
-			if (time === 0) {
-
-                this.stopTimer();
-                this.setState({
-                    timer: 10
-                })
-
-                //redirect to next quizzz
-			} else {
-				this.setState({ timer: this.state.timer - 1 });
-			}
-		}, 1000);
-
+        if(!question){
+            this.stopTimer();
+            console.log('Game over')
+        }else {
+        this.stopTimer();
+         this.start();
+        }
     }
 
 	stopTimer = () => {
-		clearInterval(this.timer);
+        clearInterval(this.timer);
+        this.setState({
+            timer: 10
+        })
 	};
 
 	render() {

@@ -7,9 +7,7 @@ function Quiz() {
 	return (
 		<Consumer>
 			{(value) => {
-                const {start, timer, count} = value;
-                console.log('timer:', timer)
-                console.log('count:',count)
+                const {start} = value;
 				return (
 					<div className="text-center">
 						<QuestionBlock />
