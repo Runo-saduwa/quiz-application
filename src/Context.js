@@ -49,11 +49,12 @@ export class Provider extends Component {
 		currentQuestionAnswer: '',
 		count: 0,
         timer: 10,
-        finish:false,
 		score:0,
-		begin: false,
 		option: '',
-		isCorrect: false
+		isCorrect: false,
+		hideStart: false,
+		hideQuiz: true,
+		hideRetake: true
 	};
 
 
@@ -62,6 +63,16 @@ export class Provider extends Component {
 		  option: e.target.value
 		})
 	};
+
+
+	retake = () => {
+      this.setState({
+		  hideRetake: true,
+		  hideQuiz: false,
+		  score: 0
+	  })
+	  this.start()
+	}
 
 
 	start = () => {
@@ -73,6 +84,8 @@ export class Provider extends Component {
 		let currentQuestionAnswer = question.answer;
 		count++;
 		this.setState({
+			hideQuiz:false,
+			hideStart:true,
 			currentQuestion,
 			currentQuestionOptions,
             currentQuestionAnswer,
@@ -115,6 +128,11 @@ export class Provider extends Component {
 		let question = this.state.questions[count];
         if(!question){
 			this.checkAnswer();
+			this.setState({
+				hideQuiz: true,
+				hideRetake: false,
+				count: 0
+			})
             console.log('Game over')
         } else {
 			this.checkAnswer();
@@ -144,7 +162,7 @@ export class Provider extends Component {
 	};
 
 	render() {
-		return <Context.Provider value={{ ...this.state, start: this.start, next: this.next, cont: this.continue, handleChange: this.handleChange }}>{this.props.children}</Context.Provider>;
+		return <Context.Provider value={{ ...this.state, start: this.start, next: this.next, cont: this.continue, handleChange: this.handleChange, retake: this.retake }}>{this.props.children}</Context.Provider>;
 	}
 }
 

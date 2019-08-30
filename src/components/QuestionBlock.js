@@ -2,28 +2,25 @@ import React, { Component } from 'react';
 import { Consumer } from '../../src/Context';
 
 class QuestionBlock extends Component {
-	// state = {
-	
-	// 	option: ''
-	// }
-
-
 
 	render() {
 		return (
 			<Consumer>
 				{(value) => {
-					const { currentQuestion, cont, currentQuestionOptions, handleChange, option } = value;
-			
+					const { currentQuestion, cont, currentQuestionOptions, handleChange, option, hideQuiz } = value;
+
 					console.log(option);
-					
-					return (
-						<div>
+					let quizBlock;
+
+					if (hideQuiz) {
+						quizBlock = null;
+					} else {
+						quizBlock = (
 							<div className="card text-center">
 								<div className="card-header">Question</div>
 								<div className="card-body">
 									<h5 className="card-title">{currentQuestion}</h5>
-									<ul class="list-group">
+									<ul className="list-group">
 										{currentQuestionOptions ? (
 											currentQuestionOptions.map((opt, i) => (
 												<li key={i} className="list-group-item">
@@ -31,7 +28,7 @@ class QuestionBlock extends Component {
 														<input
 															type="radio"
 															value={opt}
-															checked={option === opt }
+															checked={option === opt}
 															onChange={handleChange}
 														/>
 														{opt}
@@ -39,15 +36,16 @@ class QuestionBlock extends Component {
 												</li>
 											))
 										) : null}
-									</ul>	
+									</ul>
 									<button className="btn btn-primary" onClick={cont}>
 										Next Button
 									</button>
 								</div>
-							
 							</div>
-						</div>
-					);
+						);
+					}
+
+					return <div>{quizBlock}</div>;
 				}}
 			</Consumer>
 		);
